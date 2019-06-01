@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Shammill.LobbyManager.Services.Interfaces;
 
 namespace Shammill.LobbyManager.Controllers
 {
     [Route("api/[controller]")]
     public class LobbyController : Controller
     {
+        ILobbyService lobbyService;
+        public LobbyController(ILobbyService lobbyService)
+        {
+            this.lobbyService = lobbyService;
+        }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
