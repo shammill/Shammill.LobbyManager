@@ -75,6 +75,11 @@ namespace Shammill.LobbyManager.Services
             return isSuccessful;
         }
 
+        public Lobby GetLobby(Guid id)
+        {
+            return lobbies.Where(x => x.Key == id).Select(x => x.Value).FirstOrDefault();
+        }
+
         // searching/getting
         public List<Lobby> GetLobbies(LobbyFilter lobbyFilter)
         {

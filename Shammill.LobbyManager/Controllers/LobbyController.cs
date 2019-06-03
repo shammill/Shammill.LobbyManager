@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Shammill.LobbyManager.Models;
+using Shammill.LobbyManager.Models.Requests;
 using Shammill.LobbyManager.Services.Interfaces;
 
 namespace Shammill.LobbyManager.Controllers
@@ -16,36 +18,40 @@ namespace Shammill.LobbyManager.Controllers
             this.lobbyService = lobbyService;
         }
 
-        // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
+        // GET api/lobby/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Lobby Get(Guid lobbyId)
         {
-            return "value";
+            return lobbyService.GetLobby(lobbyId);
         }
 
-        // POST api/values
+        // GET api/lobby
+        [HttpGet]
+        public IEnumerable<Lobby> Get(LobbyFilter lobbyfilter)
+        {
+            return lobbyService.GetLobbies(lobbyfilter);
+        }
+
+
+        // POST api/lobby
         [HttpPost]
-        public void Post([FromBody]string value)
+        public Lobby Post([FromBody]CreateLobbyRequest createLobbyRequest)
         {
+            return lobbyService.CreateLobby(createLobbyRequest);
         }
 
-        // PUT api/values/5
+        // PUT api/lobby/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(Guid id, [FromBody]Lobby lobby)
         {
+            lobbyService.UpdateLobbyDetails(lobby);
         }
 
-        // DELETE api/values/5
+        // DELETE api/lobby/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
+            lobbyService.DestroyLobby(id);
         }
     }
 }

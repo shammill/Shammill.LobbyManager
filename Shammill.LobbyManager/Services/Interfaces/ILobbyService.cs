@@ -16,6 +16,7 @@ namespace Shammill.LobbyManager.Services.Interfaces
         bool RemovePlayerFromLobby(Guid lobby, Player playerId);
         bool ChangeLobbyLeader(Guid lobby, Player playerId);
 
+        Lobby GetLobby(Guid id);
         List<Lobby> GetLobbies(LobbyFilter lobbyFilter);
     }
 }
