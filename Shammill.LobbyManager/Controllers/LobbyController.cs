@@ -10,22 +10,23 @@ using Shammill.LobbyManager.Services.Interfaces;
 namespace Shammill.LobbyManager.Controllers
 {
     [Route("api/[controller]")]
-    public class LobbyController : Controller
+    public class LobbiesController : Controller
     {
         ILobbyService lobbyService;
-        public LobbyController(ILobbyService lobbyService)
+        public LobbiesController(ILobbyService lobbyService)
         {
             this.lobbyService = lobbyService;
         }
 
-        // GET api/lobby/5
+#region CRUD
+        // GET api/lobbies/{guid}
         [HttpGet("{id}")]
         public Lobby Get(Guid lobbyId)
         {
             return lobbyService.GetLobby(lobbyId);
         }
 
-        // GET api/lobby
+        // GET api/lobbies
         [HttpGet]
         public IEnumerable<Lobby> Get(LobbyFilter lobbyfilter)
         {
@@ -33,25 +34,28 @@ namespace Shammill.LobbyManager.Controllers
         }
 
 
-        // POST api/lobby
+        // POST api/lobbies
         [HttpPost]
         public Lobby Post([FromBody]CreateLobbyRequest createLobbyRequest)
         {
             return lobbyService.CreateLobby(createLobbyRequest);
         }
 
-        // PUT api/lobby/5
+        // PUT api/lobbies/{guid}
         [HttpPut("{id}")]
         public void Put(Guid id, [FromBody]Lobby lobby)
         {
             lobbyService.UpdateLobbyDetails(lobby);
         }
 
-        // DELETE api/lobby/5
+        // DELETE api/lobbies/{guid}
         [HttpDelete("{id}")]
         public void Delete(Guid id)
         {
             lobbyService.DestroyLobby(id);
         }
+#endregion
+
+
     }
 }

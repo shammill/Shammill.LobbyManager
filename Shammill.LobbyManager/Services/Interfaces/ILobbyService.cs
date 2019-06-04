@@ -7,16 +7,12 @@ namespace Shammill.LobbyManager.Services.Interfaces
 {
     public interface ILobbyService
     {
-        Lobby CreateLobby(CreateLobbyRequest lobbyRequest);
-        void DestroyLobby(Guid lobby);
-
-        Lobby UpdateLobbyDetails(Lobby lobby);
-
-        bool AddPlayerToLobby(Guid lobby, Player playerId);
-        bool RemovePlayerFromLobby(Guid lobby, Player playerId);
-        bool ChangeLobbyLeader(Guid lobby, Player playerId);
-
         Lobby GetLobby(Guid id);
         List<Lobby> GetLobbies(LobbyFilter lobbyFilter);
+
+        Lobby CreateLobby(CreateLobbyRequest lobbyRequest);
+        Lobby UpdateLobbyDetails(Lobby lobby);
+
+        void DestroyLobby(Guid lobby);
     }
 }
