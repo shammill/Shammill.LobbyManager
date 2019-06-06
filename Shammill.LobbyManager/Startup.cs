@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Shammill.LobbyManager.Services;
 using Shammill.LobbyManager.Services.Interfaces;
+using Shammill.LobbyManager.Hubs;
 
 namespace Shammill.LobbyManager
 {
@@ -27,6 +22,7 @@ namespace Shammill.LobbyManager
         {
             services.AddMvc();
             services.AddScoped<ILobbyService, LobbyService>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,6 +32,11 @@ namespace Shammill.LobbyManager
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<SignalRHub>("/signalr");
+            });
 
             app.UseMvc();
         }
