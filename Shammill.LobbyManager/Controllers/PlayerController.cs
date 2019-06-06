@@ -22,28 +22,28 @@ namespace Shammill.LobbyManager.Controllers
         [HttpGet("{id}")]
         public List<Player> Get(Guid lobbyId)
         {
-            return new List<Player>(); //todo //playerService.(lobbyId);
+            return playerService.GetPlayers(lobbyId);
         }
 
         // POST api/lobbies/{guid}/players/
         [HttpPost]
-        public bool Post([FromQuery]Guid lobbyId, [FromBody]Player addPlayerRequest)
+        public bool Post([FromQuery]Guid lobbyId, [FromBody]Player player)
         {
-            return playerService.AddPlayerToLobby(lobbyId, addPlayerRequest);
+            return playerService.AddPlayer(lobbyId, player);
         }
 
         // PUT api/lobbies/{guid}/players/
         [HttpPut("{id}")]
-        public bool Put(Guid id, [FromBody]Player player)
+        public bool Put(Guid lobbyId, [FromBody]Player player)
         {
-           return playerService.ChangeLobbyLeader(id, player);
+           return playerService.SetLobbyLeader(lobbyId, player);
         }
 
         // DELETE api/lobbies/{guid}
         [HttpDelete("{id}")]
-        public bool Delete(Guid id, Player playerId)
+        public bool Delete(Guid lobbyId, Player player)
         {
-            return playerService.RemovePlayerFromLobby(id, playerId);
+            return playerService.RemovePlayer(lobbyId, player);
         }
 
     }

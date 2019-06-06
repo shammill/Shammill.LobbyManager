@@ -36,16 +36,16 @@ namespace Shammill.LobbyManager.Controllers
 
         // POST api/lobbies
         [HttpPost]
-        public Lobby Post([FromBody]CreateLobbyRequest createLobbyRequest)
+        public Lobby Post([FromBody]Lobby lobby)
         {
-            return lobbyService.CreateLobby(createLobbyRequest);
+            return lobbyService.CreateLobby(lobby);
         }
 
         // PUT api/lobbies/{guid}
         [HttpPut("{id}")]
         public void Put(Guid id, [FromBody]Lobby lobby)
         {
-            lobbyService.UpdateLobbyDetails(lobby);
+            lobbyService.UpdateLobby(lobby);
         }
 
         // DELETE api/lobbies/{guid}

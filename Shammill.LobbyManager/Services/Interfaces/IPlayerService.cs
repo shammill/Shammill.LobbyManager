@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Shammill.LobbyManager.Models;
-using Shammill.LobbyManager.Models.Requests;
 
 namespace Shammill.LobbyManager.Services.Interfaces
 {
     public interface IPlayerService
     {
-        bool AddPlayerToLobby(Guid lobby, Player playerId);
-        bool RemovePlayerFromLobby(Guid lobby, Player playerId);
-        bool ChangeLobbyLeader(Guid lobby, Player playerId);
+        List<Player> GetPlayers(Guid lobbyId);
+
+        bool AddPlayer(Guid lobbyId, Player player);
+        bool RemovePlayer(Guid lobbyId, Player player);
+        bool SetLobbyLeader(Guid lobbyId, Player player);
     }
 }

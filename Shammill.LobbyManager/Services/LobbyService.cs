@@ -20,7 +20,7 @@ namespace Shammill.LobbyManager.Services
 
         public Lobby GetLobby(Guid id)
         {
-            return lobbies.Where(x => x.Key == id).Select(x => x.Value).FirstOrDefault();
+            return lobbies.FirstOrDefault(x => x.Key == id).Value;
         }
 
         // searching/getting
@@ -41,27 +41,15 @@ namespace Shammill.LobbyManager.Services
                     .ToList();
         }
 
-        public Lobby CreateLobby(CreateLobbyRequest createLobbyRequest)
+        public Lobby CreateLobby(Lobby lobby)
         {
-            //maybe use automapper
-            Lobby lobby = new Lobby()
-            {
-                Id = Guid.NewGuid(),
-                Name = createLobbyRequest.LobbyName,
-                IsPublic = createLobbyRequest.IsPublic,
-                Region = createLobbyRequest.Region,
-                MaximumSize = createLobbyRequest.MaximumSize,
-                GameMode = createLobbyRequest.GameMode,
-                IsJoinable = createLobbyRequest.IsJoinable,
-                Players = new List<Player>()
-            };
-            // Add lead player
+            lobby.Id = Guid.NewGuid();
             lobbies.Add(lobby.Id, lobby);
 
             return lobby;
         }
 
-        public Lobby UpdateLobbyDetails(Lobby lobby)
+        public Lobby UpdateLobby(Lobby lobby)
         {
             lobbies[lobby.Id] = lobby;
             return lobby;

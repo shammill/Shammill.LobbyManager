@@ -12,7 +12,7 @@ namespace Shammill.LobbyManager.Controllers
         [HttpGet]
         public string Get()
         {
-            return "alive";
+            return "OK";
         }
     }
 }

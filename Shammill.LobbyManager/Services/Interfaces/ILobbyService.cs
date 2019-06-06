@@ -10,8 +10,8 @@ namespace Shammill.LobbyManager.Services.Interfaces
         Lobby GetLobby(Guid id);
         List<Lobby> GetLobbies(LobbyFilter lobbyFilter);
 
-        Lobby CreateLobby(CreateLobbyRequest lobbyRequest);
-        Lobby UpdateLobbyDetails(Lobby lobby);
+        Lobby CreateLobby(Lobby lobby);
+        Lobby UpdateLobby(Lobby lobby);
 
         void DestroyLobby(Guid lobby);
     }
