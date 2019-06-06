@@ -18,17 +18,22 @@ namespace Shammill.LobbyManager.Services
             
         }
 
-        public bool AddPlayerToLobby(Guid lobbyId, Player player) {
+        public List<Player> GetPlayers(Guid lobbyId)
+        {
+            return lobbies[lobbyId].Players;
+        }
+
+        public bool AddPlayer(Guid lobbyId, Player player) {
             lobbies[lobbyId].Players.Add(player);
             return true;
         }
 
-        public bool RemovePlayerFromLobby(Guid lobbyId, Player player) {
+        public bool RemovePlayer(Guid lobbyId, Player player) {
             lobbies[lobbyId].Players.Remove(player);
             return true;
         }
 
-        public bool ChangeLobbyLeader(Guid lobbyId, Player playerLeader) {
+        public bool SetLobbyLeader(Guid lobbyId, Player playerLeader) {
             var isSuccessful = false;
             foreach (var player in lobbies[lobbyId].Players)
             {
