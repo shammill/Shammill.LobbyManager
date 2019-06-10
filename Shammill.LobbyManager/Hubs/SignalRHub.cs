@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Shammill.LobbyManager.Hubs
 {
-    public class SignalRHub : Hub
+    public class SignalRHub : Hub, ISignalRHub
     {
         public override async Task OnConnectedAsync()
         {
