@@ -22,10 +22,21 @@ namespace Shammill.LobbyManager.Hubs
 
 
         [HubMethodName("SendMessageToUser")]
-        public async Task SendMessage(string user, string message)
+        public async Task SendMessage(string userId, string message)
         {
-            await Clients.User("").SendAsync(""); //.SendMessage("test");
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            await Clients.User(userId).SendAsync("ReceiveMessage", message);
+        }
+
+        [HubMethodName("SendMessageToGroup")]
+        public async Task SendMessageGroup(string group, string message)
+        {
+            await Clients.Groups(group).SendAsync("ReceiveMessage", message);
+        }
+
+        [HubMethodName("SendMessageToAllUsers")]
+        public async Task SendMessageAll(string message)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", message);
         }
     }
 }
