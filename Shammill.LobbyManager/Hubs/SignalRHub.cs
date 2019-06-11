@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Shammill.LobbyManager.Models;
 
 namespace Shammill.LobbyManager.Hubs
 {
@@ -22,19 +23,19 @@ namespace Shammill.LobbyManager.Hubs
 
 
         [HubMethodName("SendMessageToUser")]
-        public async Task SendMessage(string userId, string message)
+        public async Task SendMessage(string userId, HubMessage message)
         {
             await Clients.User(userId).SendAsync("ReceiveMessage", message);
         }
 
         [HubMethodName("SendMessageToGroup")]
-        public async Task SendMessageGroup(string group, string message)
+        public async Task SendMessageGroup(string group, HubMessage message)
         {
             await Clients.Groups(group).SendAsync("ReceiveMessage", message);
         }
 
         [HubMethodName("SendMessageToAllUsers")]
-        public async Task SendMessageAll(string message)
+        public async Task SendMessageAll(HubMessage message)
         {
             await Clients.All.SendAsync("ReceiveMessage", message);
         }

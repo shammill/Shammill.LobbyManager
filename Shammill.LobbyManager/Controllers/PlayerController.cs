@@ -9,7 +9,7 @@ using Shammill.LobbyManager.Services.Interfaces;
 
 namespace Shammill.LobbyManager.Controllers
 {
-    [Route("api/lobbies/{id}/[controller]")]
+    [Route("api/lobbies/{lobbyId}/[controller]")]
     public class PlayersController : Controller
     {
         IPlayerService playerService;
@@ -18,7 +18,7 @@ namespace Shammill.LobbyManager.Controllers
             this.playerService = playerService;
         }
 
-        // GET api/lobbies/{guid}
+        // GET api/lobbies/{guid}/players/
         [HttpGet("{id}")]
         public List<Player> Get(Guid lobbyId)
         {
@@ -39,7 +39,7 @@ namespace Shammill.LobbyManager.Controllers
            return playerService.SetLobbyLeader(lobbyId, player);
         }
 
-        // DELETE api/lobbies/{guid}
+        // DELETE api/lobbies/{guid}/players
         [HttpDelete("{id}")]
         public bool Delete(Guid lobbyId, Player player)
         {
