@@ -52,6 +52,17 @@ namespace Shammill.LobbyManager.Services
             lobby.Id = Guid.NewGuid();
             lobbies.Add(lobby.Id, lobby);
 
+            // add player who created the lobby to it.
+
+            // add player to signalr lobby group
+            signalRHub.AddUserToGroup("userid", lobby.Id.ToString());
+
+            // notify user lobby is created
+            var user = hubContext.Clients.User(lobby.Players.First().Id.ToString());
+            //var client = hubContext.Clients.
+            signalRHub.LobbyCreatedNotifyUser(user.ToString(), new HubMessage { content = lobby });
+
+
             return lobby;
         }
 
@@ -59,9 +70,8 @@ namespace Shammill.LobbyManager.Services
         {
             lobbies[lobby.Id] = lobby;
 
-            //I think calling a method on the SignalRHub class is a better approach...
-            hubContext.Clients.Group(lobby.Id.ToString()).SendAsync("RecieveMessageUpdatedLobby", lobby);
-
+            // send an update to all players in this lobby with the changes.
+            signalRHub.LobbyUpdatedNotifyGroup(lobby.Id.ToString(), new HubMessage { content = lobby });
 
             return lobby;
         }

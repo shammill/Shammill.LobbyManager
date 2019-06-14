@@ -23,5 +23,22 @@ namespace Shammill.LobbyManager.Hubs
 
         [HubMethodName("SendMessageToAllUsers")]
         Task SendMessageAll(HubMessage message);
+
+        [HubMethodName("LobbyCreatedNotifyUser")]
+        Task LobbyCreatedNotifyUser(string userId, HubMessage message);
+
+        [HubMethodName("LobbyUpdatedNotifyUser")]
+        Task LobbyUpdatedNotifyUser(string userId, HubMessage message);
+
+        [HubMethodName("LobbyUpdatedNotifyGroup")]
+        Task LobbyUpdatedNotifyGroup(string group, HubMessage message);
+
+        [HubMethodName("PlayerAddedToLobbyNotifyUser")]
+        Task PlayerAddedToLobbyNotifyUser(string userId, HubMessage message);
+
+        [HubMethodName("PlayerAddedToLobbyNotifyGroup")]
+        Task PlayerAddedToLobbyNotifyGroup(string group, HubMessage message);
+
+        Task AddUserToGroup(string userid, string group);
     }
 }

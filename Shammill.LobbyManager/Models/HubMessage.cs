@@ -5,7 +5,6 @@ namespace Shammill.LobbyManager.Models
 {
     public class HubMessage
     {
-        public string context;
-        public object message;
+        public object content;
     }
 }
