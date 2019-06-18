@@ -23,7 +23,10 @@ namespace Shammill.LobbyManager.Hubs
         }
 
 
-
+        public class ClientNotifier : SignalRHub
+        {
+            // maybe put all "update/send" user messages in a subclass?
+        }
 
         [HubMethodName("SendMessageToUser")]
         public async Task SendMessage(string userId, HubMessage message)
@@ -60,6 +63,12 @@ namespace Shammill.LobbyManager.Hubs
         public async Task LobbyUpdatedNotifyGroup(string group, HubMessage message)
         {
             await Clients.Groups(group).SendAsync("LobbyUpdated", message);
+        }
+
+        [HubMethodName("LobbyDestroyedNotifyGroup")]
+        public async Task LobbyDestroyedNotifyGroup(string group, HubMessage message)
+        {
+            await Clients.Groups(group).SendAsync("LobbyDestroyed", message);
         }
 
         [HubMethodName("PlayerAddedToLobbyNotifyUser")]

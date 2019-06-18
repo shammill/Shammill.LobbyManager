@@ -12,7 +12,7 @@ namespace Shammill.LobbyManager.Services
 {
     public class LobbyService: ILobbyService
     {
-        // Will move away from a singleton eventually, HA'd etc.
+        // Will move away from a singleton eventually, HA'd or DB etc.
         Dictionary<Guid, Lobby> lobbies = LobbyCache.Instance.Lobbies;
         private readonly IHubContext<SignalRHub> hubContext;
         private readonly ISignalRHub signalRHub;
@@ -80,6 +80,8 @@ namespace Shammill.LobbyManager.Services
 
         public void DestroyLobby(Guid lobbyId) {
             lobbies.Remove(lobbyId);
+
+            signalRHub.LobbyDestroyedNotifyGroup(lobbyId.ToString(), new HubMessage { content = lobbyId });
         }
     }
 }

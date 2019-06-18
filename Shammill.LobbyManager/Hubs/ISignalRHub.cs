@@ -33,6 +33,9 @@ namespace Shammill.LobbyManager.Hubs
         [HubMethodName("LobbyUpdatedNotifyGroup")]
         Task LobbyUpdatedNotifyGroup(string group, HubMessage message);
 
+        [HubMethodName("LobbyUpdatedNotifyGroup")]
+        Task LobbyDestroyedNotifyGroup(string group, HubMessage message);
+
         [HubMethodName("PlayerAddedToLobbyNotifyUser")]
         Task PlayerAddedToLobbyNotifyUser(string userId, HubMessage message);
 
