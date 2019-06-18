@@ -54,11 +54,13 @@ namespace Shammill.LobbyManager.Services
 
             // add player who created the lobby to it.
 
+            var user = lobby.Players.First().Id.ToString();
+
             // add player to signalr lobby group
-            signalRHub.AddUserToGroup("userid", lobby.Id.ToString());
+            signalRHub.AddUserToGroup(user, lobby.Id.ToString());
 
             // notify user lobby is created
-            var user = hubContext.Clients.User(lobby.Players.First().Id.ToString());
+            //var user = hubContext.Clients.Group();
             //var client = hubContext.Clients.
             signalRHub.LobbyCreatedNotifyUser(user.ToString(), new HubMessage { content = lobby });
 

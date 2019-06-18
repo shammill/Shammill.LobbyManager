@@ -40,5 +40,7 @@ namespace Shammill.LobbyManager.Hubs
         Task PlayerAddedToLobbyNotifyGroup(string group, HubMessage message);
 
         Task AddUserToGroup(string userid, string group);
+
+        Task AddToGroup(string group);
     }
 }

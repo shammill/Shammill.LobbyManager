@@ -11,12 +11,10 @@ namespace Shammill.LobbyManager.Hubs
     {
         public override async Task OnConnectedAsync()
         {
-            string name = Context.UserIdentifier;
-            string otherName = Context.User.Identity.Name;
-            await Groups.AddToGroupAsync(Context.ConnectionId, name);
-            await Clients.Caller.SendAsync("Connected", $"Connection: {Context.ConnectionId}  User: {Context.UserIdentifier}"); // surely there is a better way?
+            await Clients.Caller.SendAsync("Connected", Context.ConnectionId);
             await base.OnConnectedAsync();
         }
+
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
@@ -76,9 +74,18 @@ namespace Shammill.LobbyManager.Hubs
             await Clients.Groups(group).SendAsync("PlayerAddedToLobby", message);
         }
 
-        public async Task AddUserToGroup(string userid, string group)
+
+        [HubMethodName("AddUserToGroup")]
+        public async Task AddUserToGroup(string userId, string group)
         {
-            await Groups.AddToGroupAsync("", "group");
+            await Groups.AddToGroupAsync(Context.ConnectionId, group);
+        }
+
+        [HubMethodName("AddToGroup")]
+        public async Task AddToGroup(string group)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, group);
+            await Clients.Group(group).SendAsync("AddedToGroup", group);
         }
 
     }
