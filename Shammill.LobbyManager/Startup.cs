@@ -23,7 +23,7 @@ namespace Shammill.LobbyManager
             services.AddMvc();
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IPlayerService, PlayerService>();
-            services.AddTransient<ISignalRHub, SignalRHub>();
+            services.AddTransient<SignalRHub, SignalRHub>();
             services.AddSignalR();
         }
 

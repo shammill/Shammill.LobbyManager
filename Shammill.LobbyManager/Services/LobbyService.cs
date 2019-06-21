@@ -15,10 +15,10 @@ namespace Shammill.LobbyManager.Services
         // Will move away from a singleton eventually, HA'd or DB etc.
         Dictionary<Guid, Lobby> lobbies = LobbyCache.Instance.Lobbies;
         private readonly IHubContext<SignalRHub> hubContext;
-        private readonly ISignalRHub signalRHub;
+        private readonly SignalRHub signalRHub;
 
 
-        public LobbyService(IHubContext<SignalRHub> hubContext, ISignalRHub signalRHub)
+        public LobbyService(IHubContext<SignalRHub> hubContext, SignalRHub signalRHub)
         {
             this.hubContext = hubContext;
             this.signalRHub = signalRHub;
@@ -32,10 +32,13 @@ namespace Shammill.LobbyManager.Services
         // searching/getting
         public List<Lobby> GetLobbies(LobbyFilter lobbyFilter)
         {
-            var filteredLobbies = lobbies.Where(lobby => lobby.Value.Region == lobbyFilter.Region)
+            var filteredLobbies = lobbies
                     .Where(lobby => lobby.Value.IsPublic == true)
                     .Where(lobby => lobby.Value.HasGameInProgress == lobbyFilter.HasGameInProgress)
                     .AsQueryable();
+
+            if (lobbyFilter.Region == RegionEnum.Unspecified)
+                filteredLobbies = filteredLobbies.Where(lobby => lobby.Value.Region == lobbyFilter.Region);
 
             if (lobbyFilter.IsNotFull)
             {
@@ -52,19 +55,6 @@ namespace Shammill.LobbyManager.Services
             lobby.Id = Guid.NewGuid();
             lobbies.Add(lobby.Id, lobby);
 
-            // add player who created the lobby to it.
-
-            var user = lobby.Players.First().Id.ToString();
-
-            // add player to signalr lobby group
-            signalRHub.AddUserToGroup(user, lobby.Id.ToString());
-
-            // notify user lobby is created
-            //var user = hubContext.Clients.Group();
-            //var client = hubContext.Clients.
-            signalRHub.LobbyCreatedNotifyUser(user.ToString(), new HubMessage { content = lobby });
-
-
             return lobby;
         }
 
@@ -72,8 +62,8 @@ namespace Shammill.LobbyManager.Services
         {
             lobbies[lobby.Id] = lobby;
 
-            // send an update to all players in this lobby with the changes.
-            signalRHub.LobbyUpdatedNotifyGroup(lobby.Id.ToString(), new HubMessage { content = lobby });
+            // send an update to all players in this lobby with the changes, this could be moved out of here.
+            signalRHub.ClientNotifier.LobbyUpdatedNotifyGroup(lobby.Id.ToString(), new HubMessage { data = lobby });
 
             return lobby;
         }
@@ -81,7 +71,7 @@ namespace Shammill.LobbyManager.Services
         public void DestroyLobby(Guid lobbyId) {
             lobbies.Remove(lobbyId);
 
-            signalRHub.LobbyDestroyedNotifyGroup(lobbyId.ToString(), new HubMessage { content = lobbyId });
+            signalRHub.ClientNotifier.LobbyDestroyedNotifyGroup(lobbyId.ToString(), new HubMessage { content = lobbyId.ToString() });
         }
     }
 }

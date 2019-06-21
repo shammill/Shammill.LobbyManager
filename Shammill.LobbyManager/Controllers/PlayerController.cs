@@ -27,7 +27,7 @@ namespace Shammill.LobbyManager.Controllers
 
         // POST api/lobbies/{guid}/players/
         [HttpPost]
-        public bool Post([FromQuery]Guid lobbyId, [FromBody]Player player)
+        public bool Post([FromRoute]Guid lobbyId, [FromBody]Player player)
         {
             return playerService.AddPlayer(lobbyId, player);
         }

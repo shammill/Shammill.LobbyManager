@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,13 @@ namespace Shammill.LobbyManager.Controllers
         [HttpPost]
         public Lobby Post([FromBody]Lobby lobby)
         {
-            return lobbyService.CreateLobby(lobby);
+            //var stream = new StreamReader(Request.Body);
+            //var body = stream.ReadToEnd();
+            //Console.WriteLine(body);
+            if (lobby != null)
+                return lobbyService.CreateLobby(lobby);
+
+            else return null;
         }
 
         // PUT api/lobbies/{guid}
