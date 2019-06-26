@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.SignalR;
 using Shammill.LobbyManager.Models;
 using Shammill.LobbyManager.Models.Requests;
 using Shammill.LobbyManager.Persistance;
 using Shammill.LobbyManager.Services.Interfaces;
-using Shammill.LobbyManager.Hubs;
 
 namespace Shammill.LobbyManager.Services
 {
@@ -14,14 +12,10 @@ namespace Shammill.LobbyManager.Services
     {
         // Will move away from a singleton eventually, HA'd or DB etc.
         Dictionary<Guid, Lobby> lobbies = LobbyCache.Instance.Lobbies;
-        private readonly IHubContext<SignalRHub> hubContext;
-        private readonly SignalRHub signalRHub;
 
-
-        public LobbyService(IHubContext<SignalRHub> hubContext, SignalRHub signalRHub)
+        public LobbyService()
         {
-            this.hubContext = hubContext;
-            this.signalRHub = signalRHub;
+
         }
 
         public Lobby GetLobby(Guid id)
@@ -62,16 +56,12 @@ namespace Shammill.LobbyManager.Services
         {
             lobbies[lobby.Id] = lobby;
 
-            // send an update to all players in this lobby with the changes, this could be moved out of here.
-            signalRHub.ClientNotifier.LobbyUpdatedNotifyGroup(lobby.Id.ToString(), new HubMessage { data = lobby });
-
             return lobby;
         }
 
-        public void DestroyLobby(Guid lobbyId) {
-            lobbies.Remove(lobbyId);
-
-            signalRHub.ClientNotifier.LobbyDestroyedNotifyGroup(lobbyId.ToString(), new HubMessage { content = lobbyId.ToString() });
+        public bool DestroyLobby(Guid lobbyId) {
+            var success = lobbies.Remove(lobbyId);
+            return success;
         }
     }
 }

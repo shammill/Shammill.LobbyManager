@@ -68,5 +68,11 @@ namespace Shammill.LobbyManager.Hubs.Notifiers
         {
             await SignalRHub.Clients.User(userId).SendAsync("PlayerRemovedFromLobby", message);
         }
+
+        [HubMethodName("LobbyLeaderChangedNotifyGroup")]
+        public async Task LobbyLeaderChangedNotifyGroup(string group, HubMessage message)
+        {
+            await SignalRHub.Clients.Groups(group).SendAsync("PlayerPromotedToLeader", message);
+        }
     }
 }

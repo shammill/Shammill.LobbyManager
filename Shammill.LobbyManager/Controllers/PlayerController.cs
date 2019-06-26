@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Shammill.LobbyManager.Hubs;
 using Shammill.LobbyManager.Models;
 using Shammill.LobbyManager.Models.Requests;
 using Shammill.LobbyManager.Services.Interfaces;
@@ -13,9 +14,11 @@ namespace Shammill.LobbyManager.Controllers
     public class PlayersController : Controller
     {
         IPlayerService playerService;
-        public PlayersController(IPlayerService playerService)
+        private readonly SignalRHub signalRHub;
+        public PlayersController(IPlayerService playerService, SignalRHub signalRHub)
         {
             this.playerService = playerService;
+            this.signalRHub = signalRHub;
         }
 
         // GET api/lobbies/{guid}/players/
@@ -29,21 +32,35 @@ namespace Shammill.LobbyManager.Controllers
         [HttpPost]
         public bool Post([FromRoute]Guid lobbyId, [FromBody]Player player)
         {
-            return playerService.AddPlayer(lobbyId, player);
+            var success = playerService.AddPlayer(lobbyId, player);
+            if (success)
+                signalRHub.ClientNotifier.PlayerAddedToLobbyNotifyGroup(lobbyId.ToString(), new HubMessage { data = player });
+
+            return success;
+
         }
 
         // PUT api/lobbies/{guid}/players/
         [HttpPut("{id}")]
         public bool Put(Guid lobbyId, [FromBody]Player player)
         {
-           return playerService.SetLobbyLeader(lobbyId, player);
+            var success = playerService.SetLobbyLeader(lobbyId, player);
+            if (success)
+                signalRHub.ClientNotifier.LobbyLeaderChangedNotifyGroup( lobbyId.ToString(), new HubMessage { data = player });
+
+            return success;
         }
 
         // DELETE api/lobbies/{guid}/players
         [HttpDelete("{id}")]
         public bool Delete(Guid lobbyId, Player player)
         {
-            return playerService.RemovePlayer(lobbyId, player);
+            var success = playerService.RemovePlayer(lobbyId, player);
+
+            if (success)
+                signalRHub.ClientNotifier.PlayerRemovedFromLobbyNotifyGroup(lobbyId.ToString(), new HubMessage { data = player });
+
+            return success;
         }
 
     }

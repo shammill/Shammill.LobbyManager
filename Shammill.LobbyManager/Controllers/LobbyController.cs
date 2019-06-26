@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Shammill.LobbyManager.Hubs;
 using Shammill.LobbyManager.Models;
 using Shammill.LobbyManager.Models.Requests;
 using Shammill.LobbyManager.Services.Interfaces;
@@ -14,9 +15,12 @@ namespace Shammill.LobbyManager.Controllers
     public class LobbiesController : Controller
     {
         ILobbyService lobbyService;
-        public LobbiesController(ILobbyService lobbyService)
+        private readonly SignalRHub signalRHub;
+
+        public LobbiesController(ILobbyService lobbyService, SignalRHub signalRHub)
         {
             this.lobbyService = lobbyService;
+            this.signalRHub = signalRHub;
         }
 
 #region CRUD
@@ -39,9 +43,6 @@ namespace Shammill.LobbyManager.Controllers
         [HttpPost]
         public Lobby Post([FromBody]Lobby lobby)
         {
-            //var stream = new StreamReader(Request.Body);
-            //var body = stream.ReadToEnd();
-            //Console.WriteLine(body);
             if (lobby != null)
                 return lobbyService.CreateLobby(lobby);
 
@@ -50,19 +51,26 @@ namespace Shammill.LobbyManager.Controllers
 
         // PUT api/lobbies/{guid}
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody]Lobby lobby)
+        public Lobby Put(Guid id, [FromBody]Lobby lobby)
         {
             lobbyService.UpdateLobby(lobby);
+
+            signalRHub.ClientNotifier.LobbyUpdatedNotifyGroup(lobby.Id.ToString(), new HubMessage { data = lobby });
+
+            return lobby;
         }
 
         // DELETE api/lobbies/{guid}
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public bool Delete(Guid id)
         {
-            lobbyService.DestroyLobby(id);
+            var success = lobbyService.DestroyLobby(id);
+
+            if (success)
+                signalRHub.ClientNotifier.LobbyDestroyedNotifyGroup(id.ToString(), new HubMessage { content = id.ToString() });
+
+            return true;
         }
 #endregion
-
-
     }
 }

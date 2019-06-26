@@ -30,8 +30,6 @@ namespace Shammill.LobbyManager.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            // somehow get all groups client is in and remove, or does sigr already handle all of that?
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, Context.User.Identity.Name);
             await base.OnDisconnectedAsync(exception);
         }
 
