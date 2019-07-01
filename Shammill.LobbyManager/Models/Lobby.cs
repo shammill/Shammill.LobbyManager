@@ -9,9 +9,6 @@ namespace Shammill.LobbyManager.Models
         public string Name;
         public List<Player> Players;
 
-        //public int[] playerIds;
-        public List<int> playerIds;
-
         public int MaximumSize;
         public bool IsPublic;
         public bool IsJoinable;

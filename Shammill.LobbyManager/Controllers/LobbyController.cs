@@ -61,13 +61,13 @@ namespace Shammill.LobbyManager.Controllers
         }
 
         // DELETE api/lobbies/{guid}
-        [HttpDelete("{id}")]
-        public bool Delete(Guid id)
+        [HttpDelete("{lobbyId}")]
+        public bool Delete(Guid lobbyId)
         {
-            var success = lobbyService.DestroyLobby(id);
+            var success = lobbyService.DestroyLobby(lobbyId);
 
             if (success)
-                signalRHub.ClientNotifier.LobbyDestroyedNotifyGroup(id.ToString(), new HubMessage { content = id.ToString() });
+                signalRHub.ClientNotifier.LobbyDestroyedNotifyGroup(lobbyId.ToString(), new HubMessage { content = lobbyId.ToString() });
 
             return true;
         }
