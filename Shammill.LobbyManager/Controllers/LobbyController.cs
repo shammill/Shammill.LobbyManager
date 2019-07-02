@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Shammill.LobbyManager.Hubs;
+using Shammill.LobbyManager.Hubs.Notifiers;
 using Shammill.LobbyManager.Models;
 using Shammill.LobbyManager.Models.Requests;
 using Shammill.LobbyManager.Services.Interfaces;
@@ -15,12 +17,12 @@ namespace Shammill.LobbyManager.Controllers
     public class LobbiesController : Controller
     {
         ILobbyService lobbyService;
-        private readonly SignalRHub signalRHub;
-
-        public LobbiesController(ILobbyService lobbyService, SignalRHub signalRHub)
+        IClientNotifier clientNotifier;
+        
+        public LobbiesController(ILobbyService lobbyService, IClientNotifier clientNotifier)
         {
             this.lobbyService = lobbyService;
-            this.signalRHub = signalRHub;
+            this.clientNotifier = clientNotifier;
         }
 
 #region CRUD
@@ -55,7 +57,7 @@ namespace Shammill.LobbyManager.Controllers
         {
             lobbyService.UpdateLobby(lobby);
 
-            signalRHub.ClientNotifier.LobbyUpdatedNotifyGroup(lobby.Id.ToString(), new HubMessage { data = lobby });
+            clientNotifier.LobbyUpdatedNotifyGroup(lobby.Id.ToString(), new HubMessage { data = lobby });
 
             return lobby;
         }
@@ -67,7 +69,7 @@ namespace Shammill.LobbyManager.Controllers
             var success = lobbyService.DestroyLobby(lobbyId);
 
             if (success)
-                signalRHub.ClientNotifier.LobbyDestroyedNotifyGroup(lobbyId.ToString(), new HubMessage { content = lobbyId.ToString() });
+                    clientNotifier.LobbyDeletedNotifyGroup(lobbyId.ToString(), new HubMessage { content = lobbyId.ToString() });
 
             return true;
         }

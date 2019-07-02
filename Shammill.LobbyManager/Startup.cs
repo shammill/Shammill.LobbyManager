@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shammill.LobbyManager.Services;
 using Shammill.LobbyManager.Services.Interfaces;
 using Shammill.LobbyManager.Hubs;
+using Shammill.LobbyManager.Hubs.Notifiers;
 
 namespace Shammill.LobbyManager
 {
@@ -23,7 +24,7 @@ namespace Shammill.LobbyManager
             services.AddMvc();
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IPlayerService, PlayerService>();
-            services.AddTransient<SignalRHub, SignalRHub>();
+            services.AddScoped<IClientNotifier, ClientNotifier>();
             services.AddSignalR();
         }
 

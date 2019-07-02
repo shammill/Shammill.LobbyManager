@@ -9,16 +9,12 @@ using Shammill.LobbyManager.Hubs.Notifiers;
 
 namespace Shammill.LobbyManager.Hubs
 {
-    public class SignalRHub : Hub//, ISignalRHub
+    public class SignalRHub : Hub
     {
-        public ClientNotifier ClientNotifier { get; set; }
-        public GenericNotifier GenericNotifier;
         public GroupHelper GroupHelper;
 
         public SignalRHub() : base()
         {
-            GenericNotifier = new GenericNotifier(this);
-            ClientNotifier = new ClientNotifier(this);
             GroupHelper = new GroupHelper(this);
         }
 
