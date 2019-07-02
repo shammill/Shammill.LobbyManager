@@ -3,8 +3,6 @@
 Current Functionality: 
 * Standard CRUD operations. (Create, Read, Update, and Delete) for Lobbies. 
 * Adding and removing players from lobbies, promoting players to leader.
-
-In Development
 * SignalR Notifcations for clients to revieve updates when data changes.
 
 Future Development:
