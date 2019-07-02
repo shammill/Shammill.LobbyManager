@@ -10,6 +10,7 @@ using Shammill.LobbyManager.Hubs.Notifiers;
 using Shammill.LobbyManager.Models;
 using Shammill.LobbyManager.Models.Requests;
 using Shammill.LobbyManager.Services.Interfaces;
+using Shammill.LobbyManager.Configuration;
 
 namespace Shammill.LobbyManager.Controllers
 {
@@ -22,7 +23,11 @@ namespace Shammill.LobbyManager.Controllers
         public LobbiesController(ILobbyService lobbyService, IClientNotifier clientNotifier)
         {
             this.lobbyService = lobbyService;
-            this.clientNotifier = clientNotifier;
+
+            if (Config.SignalREnabled)
+                this.clientNotifier = clientNotifier;
+            else
+                this.clientNotifier = new DisabledClientNotifier();
         }
 
 #region CRUD

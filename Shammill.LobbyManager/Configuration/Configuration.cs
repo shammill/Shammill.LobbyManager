@@ -1,13 +1,11 @@
-﻿using Shammill.LobbyManager.Models;
-using System;
-using System.ComponentModel;
-
-namespace Shammill.LobbyManager.Utilities
+﻿namespace Shammill.LobbyManager.Configuration
 {
-    public static class Configuration
+    public static class Config
     {
         // Two ways of notifying users, can choose.
         public static bool NotifyConnectionIds { get; set; } = true;
         public static bool NotifyUserIds { get; set; } = true;
+
+        public static bool SignalREnabled { get; set; } = true;
     }
 }
