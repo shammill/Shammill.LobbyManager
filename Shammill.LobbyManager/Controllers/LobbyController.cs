@@ -23,11 +23,7 @@ namespace Shammill.LobbyManager.Controllers
         public LobbiesController(ILobbyService lobbyService, IClientNotifier clientNotifier)
         {
             this.lobbyService = lobbyService;
-
-            if (Config.SignalREnabled)
-                this.clientNotifier = clientNotifier;
-            else
-                this.clientNotifier = new DisabledClientNotifier();
+            this.clientNotifier = clientNotifier;
         }
 
 #region CRUD

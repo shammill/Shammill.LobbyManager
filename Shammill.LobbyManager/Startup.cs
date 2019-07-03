@@ -28,7 +28,14 @@ namespace Shammill.LobbyManager
             services.AddScoped<IClientNotifier, ClientNotifier>();
 
             if (Config.SignalREnabled)
+            {
+                services.AddScoped<IClientNotifier, ClientNotifier>();
                 services.AddSignalR();
+            }
+            else
+            {
+                services.AddScoped<IClientNotifier, DisabledClientNotifier>();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

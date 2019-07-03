@@ -21,11 +21,7 @@ namespace Shammill.LobbyManager.Controllers
         public PlayersController(IPlayerService playerService, IClientNotifier clientNotifier)
         {
             this.playerService = playerService;
-
-            if (Config.SignalREnabled)
-                this.clientNotifier = clientNotifier;
-            else
-                this.clientNotifier = new DisabledClientNotifier();
+            this.clientNotifier = clientNotifier;
         }
 
         // GET api/lobbies/{guid}/players/
