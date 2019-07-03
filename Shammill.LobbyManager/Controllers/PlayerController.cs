@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Shammill.LobbyManager.Configuration;
 using Shammill.LobbyManager.Hubs;
 using Shammill.LobbyManager.Hubs.Notifiers;
 using Shammill.LobbyManager.Models;
@@ -20,7 +21,11 @@ namespace Shammill.LobbyManager.Controllers
         public PlayersController(IPlayerService playerService, IClientNotifier clientNotifier)
         {
             this.playerService = playerService;
-            this.clientNotifier = clientNotifier;
+
+            if (Config.SignalREnabled)
+                this.clientNotifier = clientNotifier;
+            else
+                this.clientNotifier = new DisabledClientNotifier();
         }
 
         // GET api/lobbies/{guid}/players/

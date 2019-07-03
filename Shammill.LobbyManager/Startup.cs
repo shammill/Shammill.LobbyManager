@@ -6,6 +6,7 @@ using Shammill.LobbyManager.Services;
 using Shammill.LobbyManager.Services.Interfaces;
 using Shammill.LobbyManager.Hubs;
 using Shammill.LobbyManager.Hubs.Notifiers;
+using Shammill.LobbyManager.Configuration;
 
 namespace Shammill.LobbyManager
 {
@@ -25,7 +26,9 @@ namespace Shammill.LobbyManager
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IPlayerService, PlayerService>();
             services.AddScoped<IClientNotifier, ClientNotifier>();
-            services.AddSignalR();
+
+            if (Config.SignalREnabled)
+                services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,10 +39,13 @@ namespace Shammill.LobbyManager
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSignalR(routes =>
+            if (Config.SignalREnabled)
             {
-                routes.MapHub<SignalRHub>("/signalr");
-            });
+                app.UseSignalR(routes =>
+                {
+                    routes.MapHub<SignalRHub>("/signalr");
+                });
+            }
 
             app.UseMvc();
         }

@@ -16,6 +16,7 @@ namespace Shammill.LobbyManager.Hubs
         public SignalRHub() : base()
         {
             GroupHelper = new GroupHelper(this);
+
         }
 
         public override async Task OnConnectedAsync()
@@ -36,6 +37,7 @@ namespace Shammill.LobbyManager.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, group);
             await Clients.Group(group).SendAsync("AddedToGroup", group);
         }
+
 
     }
 }
