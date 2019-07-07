@@ -25,7 +25,6 @@ namespace Shammill.LobbyManager
             services.AddMvc();
             services.AddScoped<ILobbyService, LobbyService>();
             services.AddScoped<IPlayerService, PlayerService>();
-            services.AddScoped<IClientNotifier, ClientNotifier>();
 
             if (Config.SignalREnabled)
             {

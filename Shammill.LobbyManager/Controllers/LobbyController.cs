@@ -11,6 +11,7 @@ using Shammill.LobbyManager.Models;
 using Shammill.LobbyManager.Models.Requests;
 using Shammill.LobbyManager.Services.Interfaces;
 using Shammill.LobbyManager.Configuration;
+using System.Net;
 
 namespace Shammill.LobbyManager.Controllers
 {
@@ -65,14 +66,15 @@ namespace Shammill.LobbyManager.Controllers
 
         // DELETE api/lobbies/{guid}
         [HttpDelete("{lobbyId}")]
-        public bool Delete(Guid lobbyId)
+        public Guid Delete(Guid lobbyId)
         {
-            var success = lobbyService.DestroyLobby(lobbyId);
+            var success = lobbyService.DeleteLobby(lobbyId);
 
             if (success)
                     clientNotifier.LobbyDeletedNotifyGroup(lobbyId.ToString(), new HubMessage { content = lobbyId.ToString() });
-
-            return true;
+            else
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return lobbyId;
         }
 #endregion
     }

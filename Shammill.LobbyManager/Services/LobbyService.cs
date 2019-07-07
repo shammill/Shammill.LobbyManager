@@ -59,7 +59,7 @@ namespace Shammill.LobbyManager.Services
             return lobby;
         }
 
-        public bool DestroyLobby(Guid lobbyId) {
+        public bool DeleteLobby(Guid lobbyId) {
             var success = lobbies.Remove(lobbyId);
             return success;
         }

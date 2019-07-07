@@ -11,12 +11,11 @@ namespace Shammill.LobbyManager.Hubs
 {
     public interface ISignalRHub
     {
-        GenericNotifier GenericNotifier();
-        ClientNotifier ClientNotifier();
-        GroupHelper GroupHelper();
-
         Task OnConnectedAsync();
 
         Task OnDisconnectedAsync(Exception exception);
+
+        Task CreateLobby(Lobby lobby);
+        Task DeleteLobby(Guid lobbyId);
     }
 }

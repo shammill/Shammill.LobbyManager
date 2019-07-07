@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -56,14 +57,16 @@ namespace Shammill.LobbyManager.Controllers
 
         // DELETE api/lobbies/{guid}/players
         [HttpDelete("{id}")]
-        public bool Delete(Guid lobbyId, Player player)
+        public Guid Delete(Guid lobbyId, Player player)
         {
             var success = playerService.RemovePlayer(lobbyId, player);
 
             if (success)
                 clientNotifier.PlayerRemovedFromLobbyNotifyGroup(lobbyId.ToString(), new HubMessage { data = player });
+            else
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
-            return success;
+            return lobbyId;
         }
 
     }

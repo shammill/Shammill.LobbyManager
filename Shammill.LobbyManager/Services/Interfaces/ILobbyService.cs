@@ -13,6 +13,6 @@ namespace Shammill.LobbyManager.Services.Interfaces
         Lobby CreateLobby(Lobby lobby);
         Lobby UpdateLobby(Lobby lobby);
 
-        bool DestroyLobby(Guid lobby);
+        bool DeleteLobby(Guid lobby);
     }
 }
